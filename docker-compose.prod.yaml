@@ -1,13 +1,34 @@
 services:
-  miranda-prod:
+  nginx:
+    image: nginx
+    build:
+      context: ./
+      dockerfile: ./nginx/Dockerfile.nginx
+    ports:
+      - '8080:8080'
+      # - '80:80'
+      # - '443:443'
+    depends_on:
+      - portofolio-prod
+    networks:
+      - portofolio-network
+    # volumes:
+    #   - /etc/letsencrypt/live/slahlou.tech:/etc/letsencrypt/live/slahlou.tech:ro
+    #   - /etc/letsencrypt/archive/slahlou.tech:/etc/letsencrypt/archive/slahlou.tech:ro
+    #   - /etc/letsencrypt/privkey.pem:/etc/letsencrypt/privkey.pem:ro
+    #   - /etc/letsencrypt/fullchain.pem:/etc/letsencrypt/fullchain.pem:ro
+  portofolio-prod:
     restart: on-failure
     build:
       context: ./
       dockerfile: Dockerfile.prod
     container_name: portofolio-prod
-    ports:
-      - 3000:3000
-    environment:
-      - VITE_API_BASE_URL=http://host.docker.internal:3000
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
+    # environment:
+    #   - VITE_API_BASE_URL=http://host.docker.internal:3000
+    # extra_hosts:
+    #   - "host.docker.internal:host-gateway"
+    networks:
+      - portofolio-network
+networks:
+  portofolio-network:
+    driver: bridge
