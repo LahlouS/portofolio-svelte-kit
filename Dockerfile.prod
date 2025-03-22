@@ -1,0 +1,21 @@
+# first we pull the node image
+FROM node:20
+
+# environment variable to dl all the dev tools node need
+ENV NODE_ENV=production
+ENV PUBLIC_BASE_URL=http://0.0.0.0:3000
+# Create a non-root user and group
+
+WORKDIR /app
+
+RUN apt-get update && apt-get install -y vim
+
+COPY ./build /app/build
+
+COPY package-lock.json* ./
+COPY package.json ./
+RUN npm install --only=production
+
+
+EXPOSE 3000
+CMD ["node", "build"]
