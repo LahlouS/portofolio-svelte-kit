@@ -1,0 +1,27 @@
+import { c as create_ssr_component, f as each, e as escape } from './ssr-C5ntIJY-.js';
+
+const skills = {
+  programming: ["Python", "Pytorch", "Pytorch Lightnings", "FastAPI", "sveltekit", "typescript", "C", "C++"],
+  devops: ["GCP", "Docker", "Git"],
+  databases: ["PostgreSQL"],
+  // tools: [],
+  languages: ["French", "English"],
+  other: ["Design principles", "Database modeling"]
+};
+const css = {
+  code: ".container.svelte-1x4k9zh.svelte-1x4k9zh{max-width:900px;padding:0;display:flex;justify-content:center}main.svelte-1x4k9zh.svelte-1x4k9zh{max-width:100%;min-height:500px;text-align:left;margin:0 auto;box-sizing:border-box}h1.svelte-1x4k9zh.svelte-1x4k9zh{font-weight:700;margin:0 0 50px 0;font-size:36px;text-align:start}h2.svelte-1x4k9zh.svelte-1x4k9zh{margin-top:50px}.list.svelte-1x4k9zh.svelte-1x4k9zh{display:flex;flex-direction:column;gap:30px}@media(min-width: 900px){.list.svelte-1x4k9zh.svelte-1x4k9zh{flex-direction:row}main.svelte-1x4k9zh>h1.svelte-1x4k9zh{font-size:48px}}",
+  map: `{"version":3,"file":"+page.svelte","sources":["+page.svelte"],"sourcesContent":["<script>\\n\\timport skills from '$lib/Skills';\\n<\/script>\\n\\n<svelte:head>\\n\\t<title>Sacha LAHLOU, ML engineer</title>\\n</svelte:head>\\n\\n<div class=\\"container\\">\\n\\t<main>\\n\\t\\t<h1>About</h1>\\n\\t\\t<p>\\n\\t\\t\\tI'm a freelance ML engineer who strongly believes that accurately engineered data is the secret sauce to a successful AI project. Coming from 42 School, I'm skilled at conducting projects, working in team, adapting to new technologies, and explaining my work in a clear and pedagogical way.\\n\\t\\t\\tI also hold a bachelor's degree in business administration, which gives me a good understanding of a company's needs and challenges.\\n\\t\\t\\tAfter a six-month internship as a research engineer at PMU, where I built data pipelines for training state-of-the-art vision models, I realized both the significant time investment required for data engineering and the immense impact a well-structured dataset can have on a project's success.\\n\\t\\t</p>\\n\\t\\t<h2>Skills</h2>\\n\\t\\t{#each Object.entries(skills) as [section, technologies]}\\n\\t\\t\\t<ul>\\n\\t\\t\\t\\t<li>\\n\\t\\t\\t\\t\\t<h4>\\n\\t\\t\\t\\t\\t\\t{section}:\\n\\t\\t\\t\\t\\t</h4>\\n\\t\\t\\t\\t\\t<div class=\\"list\\">\\n\\t\\t\\t\\t\\t\\t{#each technologies as technology}\\n\\t\\t\\t\\t\\t\\t\\t<div>\\n\\t\\t\\t\\t\\t\\t\\t\\t{technology}\\n\\t\\t\\t\\t\\t\\t\\t</div>\\n\\t\\t\\t\\t\\t\\t{/each}\\n\\t\\t\\t\\t\\t</div>\\n\\t\\t\\t\\t</li>\\n\\t\\t\\t</ul>\\n\\t\\t{/each}\\n\\t</main>\\n</div>\\n\\n<style>\\n\\t.container {\\n\\t\\tmax-width: 900px;\\n\\t\\tpadding: 0;\\n\\t\\tdisplay: flex;\\n\\t\\tjustify-content: center;\\n\\t}\\n\\n\\tmain {\\n\\t\\tmax-width: 100%;\\n\\t\\tmin-height: 500px;\\n\\t\\ttext-align: left;\\n\\t\\tmargin: 0 auto;\\n\\t\\tbox-sizing: border-box;\\n\\t}\\n\\n\\th1 {\\n\\t\\tfont-weight: 700;\\n\\t\\tmargin: 0 0 50px 0;\\n\\t\\tfont-size: 36px;\\n\\t\\ttext-align: start;\\n\\t}\\n\\n\\th2 {\\n\\t\\tmargin-top: 50px;\\n\\t}\\n\\n\\t.list {\\n\\t\\tdisplay: flex;\\n\\t\\tflex-direction: column;\\n\\t\\tgap: 30px;\\n\\t}\\n\\n\\t@media (min-width: 900px) {\\n\\t\\t.list {\\n\\t\\t\\tflex-direction: row;\\n\\t\\t}\\n\\t\\tmain > h1 {\\n\\t\\t\\tfont-size: 48px;\\n\\t\\t}\\n\\t}\\n</style>\\n"],"names":[],"mappings":"AAqCC,wCAAW,CACV,SAAS,CAAE,KAAK,CAChB,OAAO,CAAE,CAAC,CACV,OAAO,CAAE,IAAI,CACb,eAAe,CAAE,MAClB,CAEA,kCAAK,CACJ,SAAS,CAAE,IAAI,CACf,UAAU,CAAE,KAAK,CACjB,UAAU,CAAE,IAAI,CAChB,MAAM,CAAE,CAAC,CAAC,IAAI,CACd,UAAU,CAAE,UACb,CAEA,gCAAG,CACF,WAAW,CAAE,GAAG,CAChB,MAAM,CAAE,CAAC,CAAC,CAAC,CAAC,IAAI,CAAC,CAAC,CAClB,SAAS,CAAE,IAAI,CACf,UAAU,CAAE,KACb,CAEA,gCAAG,CACF,UAAU,CAAE,IACb,CAEA,mCAAM,CACL,OAAO,CAAE,IAAI,CACb,cAAc,CAAE,MAAM,CACtB,GAAG,CAAE,IACN,CAEA,MAAO,YAAY,KAAK,CAAE,CACzB,mCAAM,CACL,cAAc,CAAE,GACjB,CACA,mBAAI,CAAG,iBAAG,CACT,SAAS,CAAE,IACZ,CACD"}`
+};
+const Page = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  $$result.css.add(css);
+  return `${$$result.head += `<!-- HEAD_svelte-gdw79j_START -->${$$result.title = `<title>Sacha LAHLOU, ML engineer</title>`, ""}<!-- HEAD_svelte-gdw79j_END -->`, ""} <div class="container svelte-1x4k9zh"><main class="svelte-1x4k9zh"><h1 class="svelte-1x4k9zh" data-svelte-h="svelte-soqi9t">About</h1> <p data-svelte-h="svelte-ngmsw5">I&#39;m a freelance ML engineer who strongly believes that accurately engineered data is the secret sauce to a successful AI project. Coming from 42 School, I&#39;m skilled at conducting projects, working in team, adapting to new technologies, and explaining my work in a clear and pedagogical way.
+			I also hold a bachelor&#39;s degree in business administration, which gives me a good understanding of a company&#39;s needs and challenges.
+			After a six-month internship as a research engineer at PMU, where I built data pipelines for training state-of-the-art vision models, I realized both the significant time investment required for data engineering and the immense impact a well-structured dataset can have on a project&#39;s success.</p> <h2 class="svelte-1x4k9zh" data-svelte-h="svelte-1w8bmy8">Skills</h2> ${each(Object.entries(skills), ([section, technologies]) => {
+    return `<ul><li><h4>${escape(section)}:</h4> <div class="list svelte-1x4k9zh">${each(technologies, (technology) => {
+      return `<div>${escape(technology)} </div>`;
+    })} </div></li> </ul>`;
+  })}</main> </div>`;
+});
+
+export { Page as default };
+//# sourceMappingURL=_page.svelte-CgN9mGO1.js.map
