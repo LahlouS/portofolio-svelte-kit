@@ -1,6 +1,5 @@
-import { c as create_ssr_component, s as setContext, v as validate_component, m as missing_component } from './chunks/ssr-C5ntIJY-.js';
-import { a as afterUpdate, d as decode_pathname, b as decode_params, v as validate_server_exports, n as normalize_path, c as disable_search, e as validate_layout_server_exports, f as validate_layout_exports, g as validate_page_server_exports, h as validate_page_exports, r as resolve, m as make_trackable, i as readable, w as writable } from './chunks/exports-BmDbGHdW.js';
-import { H as HttpError, j as json, t as text, R as Redirect, S as SvelteKitError, A as ActionFailure } from './chunks/index-CvuFLVuQ.js';
+import { c as create_ssr_component, s as setContext, v as validate_component, m as missing_component } from './chunks/ssr-BW3hlEid.js';
+import { a as afterUpdate, d as decode_pathname, b as decode_params, v as validate_server_exports, n as normalize_path, c as disable_search, e as validate_layout_server_exports, f as validate_layout_exports, g as validate_page_server_exports, h as validate_page_exports, r as resolve, m as make_trackable, i as readable, w as writable } from './chunks/exports-DpkVYW2F.js';
 
 let base = "";
 let assets = base;
@@ -178,7 +177,7 @@ const options = {
 		<div class="error">
 			<span class="status">` + status + '</span>\n			<div class="message">\n				<h1>' + message + "</h1>\n			</div>\n		</div>\n	</body>\n</html>\n"
   },
-  version_hash: "8qhnto"
+  version_hash: "1m2iyeq"
 };
 async function get_hooks() {
   let handle;
@@ -195,6 +194,88 @@ async function get_hooks() {
     reroute,
     transport
   };
+}
+
+class HttpError {
+  /**
+   * @param {number} status
+   * @param {{message: string} extends App.Error ? (App.Error | string | undefined) : App.Error} body
+   */
+  constructor(status, body) {
+    this.status = status;
+    if (typeof body === "string") {
+      this.body = { message: body };
+    } else if (body) {
+      this.body = body;
+    } else {
+      this.body = { message: `Error: ${status}` };
+    }
+  }
+  toString() {
+    return JSON.stringify(this.body);
+  }
+}
+class Redirect {
+  /**
+   * @param {300 | 301 | 302 | 303 | 304 | 305 | 306 | 307 | 308} status
+   * @param {string} location
+   */
+  constructor(status, location) {
+    this.status = status;
+    this.location = location;
+  }
+}
+class SvelteKitError extends Error {
+  /**
+   * @param {number} status
+   * @param {string} text
+   * @param {string} message
+   */
+  constructor(status, text2, message) {
+    super(message);
+    this.status = status;
+    this.text = text2;
+  }
+}
+class ActionFailure {
+  /**
+   * @param {number} status
+   * @param {T} data
+   */
+  constructor(status, data) {
+    this.status = status;
+    this.data = data;
+  }
+}
+function json(data, init) {
+  const body = JSON.stringify(data);
+  const headers = new Headers(init?.headers);
+  if (!headers.has("content-length")) {
+    headers.set("content-length", encoder$3.encode(body).byteLength.toString());
+  }
+  if (!headers.has("content-type")) {
+    headers.set("content-type", "application/json");
+  }
+  return new Response(body, {
+    ...init,
+    headers
+  });
+}
+const encoder$3 = new TextEncoder();
+function text(body, init) {
+  const headers = new Headers(init?.headers);
+  if (!headers.has("content-length")) {
+    const encoded = encoder$3.encode(body);
+    headers.set("content-length", encoded.byteLength.toString());
+    return new Response(encoded, {
+      ...init,
+      headers
+    });
+  }
+  return new Response(body, {
+    ...init,
+    headers
+  });
 }
 
 /** @type {Record<string, string>} */
@@ -1634,7 +1715,10 @@ async function handle_error_and_jsonify(event, options2, error) {
   }
   const status = get_status(error);
   const message = get_message(error);
-  return await options2.hooks.handleError({ error, event, status, message }) ?? { message };
+  return await with_event(
+    event,
+    () => options2.hooks.handleError({ error, event, status, message })
+  ) ?? { message };
 }
 function redirect_response(status, location) {
   const response = new Response(void 0, {
@@ -1645,28 +1729,28 @@ function redirect_response(status, location) {
 }
 function clarify_devalue_error(event, error) {
   if (error.path) {
-    return `Data returned from \`load\` while rendering ${event.route.id} is not serializable: ${error.message} (data${error.path})`;
+    return `Data returned from \`load\` while rendering ${event.route.id} is not serializable: ${error.message} (${error.path})`;
   }
   if (error.path === "") {
     return `Data returned from \`load\` while rendering ${event.route.id} is not a plain object`;
   }
   return error.message;
 }
-function stringify_uses(node) {
-  const uses = [];
+function serialize_uses(node) {
+  const uses = {};
   if (node.uses && node.uses.dependencies.size > 0) {
-    uses.push(`"dependencies":${JSON.stringify(Array.from(node.uses.dependencies))}`);
+    uses.dependencies = Array.from(node.uses.dependencies);
   }
   if (node.uses && node.uses.search_params.size > 0) {
-    uses.push(`"search_params":${JSON.stringify(Array.from(node.uses.search_params))}`);
+    uses.search_params = Array.from(node.uses.search_params);
   }
   if (node.uses && node.uses.params.size > 0) {
-    uses.push(`"params":${JSON.stringify(Array.from(node.uses.params))}`);
+    uses.params = Array.from(node.uses.params);
   }
-  if (node.uses?.parent) uses.push('"parent":1');
-  if (node.uses?.route) uses.push('"route":1');
-  if (node.uses?.url) uses.push('"url":1');
-  return `"uses":{${uses.join(",")}}`;
+  if (node.uses?.parent) uses.parent = 1;
+  if (node.uses?.route) uses.route = 1;
+  if (node.uses?.url) uses.url = 1;
+  return uses;
 }
 function has_prerendered_path(manifest, pathname) {
   return manifest._.prerendered_routes.has(pathname) || pathname.at(-1) === "/" && manifest._.prerendered_routes.has(pathname.slice(0, -1));
@@ -3306,13 +3390,16 @@ function get_data(event, options2, nodes, csp, global) {
   try {
     const strings = nodes.map((node) => {
       if (!node) return "null";
-      return `{"type":"data","data":${uneval(node.data, replacer)},${stringify_uses(node)}${node.slash ? `,"slash":${JSON.stringify(node.slash)}` : ""}}`;
+      const payload = { type: "data", data: node.data, uses: serialize_uses(node) };
+      if (node.slash) payload.slash = node.slash;
+      return uneval(payload, replacer);
     });
     return {
       data: `[${strings.join(",")}]`,
       chunks: count > 0 ? iterator : null
     };
   } catch (e) {
+    e.path = e.path.slice(1);
     throw new Error(clarify_devalue_error(
       event,
       /** @type {any} */
@@ -3690,8 +3777,8 @@ function get_data_json(event, options2, nodes) {
       if (node.type === "error" || node.type === "skip") {
         return JSON.stringify(node);
       }
-      return `{"type":"data","data":${stringify(node.data, reducers)},${stringify_uses(
-        node
+      return `{"type":"data","data":${stringify(node.data, reducers)},"uses":${JSON.stringify(
+        serialize_uses(node)
       )}${node.slash ? `,"slash":${JSON.stringify(node.slash)}` : ""}}`;
     });
     return {
@@ -3700,6 +3787,7 @@ function get_data_json(event, options2, nodes) {
       chunks: count > 0 ? iterator : null
     };
   } catch (e) {
+    e.path = "data" + e.path;
     throw new Error(clarify_devalue_error(
       event,
       /** @type {any} */
@@ -3753,7 +3841,9 @@ async function render_page(event, page, options2, manifest, state, nodes, resolv
     const should_prerender_data = nodes.should_prerender_data();
     const data_pathname = add_data_suffix(event.url.pathname);
     const fetched = [];
-    if (nodes.ssr() === false && !(state.prerendering && should_prerender_data)) {
+    const ssr = nodes.ssr();
+    const csr = nodes.csr();
+    if (ssr === false && !(state.prerendering && should_prerender_data)) {
       if (DEV && action_result && !event.request.headers.has("x-sveltekit-action")) {
         if (action_result.type === "error") {
           console.warn(
@@ -3770,7 +3860,7 @@ async function render_page(event, page, options2, manifest, state, nodes, resolv
         fetched,
         page_config: {
           ssr: false,
-          csr: nodes.csr()
+          csr
         },
         status,
         error: null,
@@ -3812,7 +3902,6 @@ async function render_page(event, page, options2, manifest, state, nodes, resolv
         }
       });
     });
-    const csr = nodes.csr();
     const load_promises = nodes.data.map((node, i) => {
       if (load_error) throw load_error;
       return Promise.resolve().then(async () => {
@@ -3877,16 +3966,21 @@ async function render_page(event, page, options2, manifest, state, nodes, resolv
               const node2 = await manifest._.nodes[index]();
               let j = i;
               while (!branch[j]) j -= 1;
+              const layouts = compact(branch.slice(0, j + 1));
+              const nodes2 = new PageNodes(layouts.map((layout) => layout.node));
               return await render_response({
                 event,
                 options: options2,
                 manifest,
                 state,
                 resolve_opts,
-                page_config: { ssr: true, csr: true },
+                page_config: {
+                  ssr: nodes2.ssr(),
+                  csr: nodes2.csr()
+                },
                 status: status2,
                 error,
-                branch: compact(branch.slice(0, j + 1)).concat({
+                branch: layouts.concat({
                   node: node2,
                   data: null,
                   server_data: null
@@ -3917,7 +4011,6 @@ async function render_page(event, page, options2, manifest, state, nodes, resolv
         body: data
       });
     }
-    const ssr = nodes.ssr();
     return await render_response({
       event,
       options: options2,
@@ -3925,7 +4018,7 @@ async function render_page(event, page, options2, manifest, state, nodes, resolv
       state,
       resolve_opts,
       page_config: {
-        csr: nodes.csr(),
+        csr,
         ssr
       },
       status,
