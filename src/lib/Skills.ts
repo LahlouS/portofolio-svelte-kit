@@ -4,7 +4,7 @@ const skills = {
 	databases: ['PostgreSQL'],
 	// tools: [],
 	languages: ['French', 'English'],
-	other: ['Design principles', "Database modeling"]
+	other: ["Features engineering", "Satistics", 'Design principles', "Database modeling"]
 };
 
 export default skills;
