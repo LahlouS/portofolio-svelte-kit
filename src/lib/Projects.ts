@@ -4,7 +4,7 @@ const projects = [
 		technologies: ['GCP', 'PostgresSQL:pgvector', "HF 🤗​ Sentence Transformer", "FastAPI", "Sveltekit"],
 		description:
 			'Miranda is an AI powered ranking system that help online brand to find the perfect ambassor for their products.\nMIRANDA transform product marketing description into social media post format and find the best mathcing user based on different metrics:\n- emotional score\n- factual score\n- quantitative metrics: number of followers, likes ...',
-		url: 'https://miranda.slahlou.tech/'
+		url: 'https://drive.google.com/file/d/1C7A1CQaq7ko0QbOaAbaJbhWIGlNJnvMI/view?usp=drive_link'
 	},
 	{
 		title: 'DBM ad-hoc survey to LLM training DS',
